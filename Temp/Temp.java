@@ -9,7 +9,7 @@ import java.math.*;
  
 
 
-public class Demo {
+public class Temp {
 	public static void main(String[] args) {
         int[] arr = {1,1,3,2};
         int[] sort = {3, 1, 8, 6, 2};
@@ -32,11 +32,23 @@ public class Demo {
         int kthLargest = findKthLargest(findKthLargestArr, 2);
         out.println("Result: " + kthLargest);
 
-
-
         
-    
+    }
 
+    public static void print(int[] arr)
+    {
+        //for debugging only
+        for (int x : arr)
+            out.print(x + " ");
+        out.println();
+    }
+
+    public static <T> void printObject(T[] arr)
+    {
+        //for debugging only
+        for(T x : arr)
+            out.print(x+" ");
+        out.println();
     }
 
    public static void reverseString(char[] s) {
