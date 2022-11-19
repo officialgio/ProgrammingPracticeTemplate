@@ -6,9 +6,6 @@ import java.util.*;
 import java.io.*;
 import java.math.*;
 
- 
-
-
 public class Temp {
 	public static void main(String[] args) {
         int[] arr = {1,1,3,2};
@@ -19,42 +16,75 @@ public class Temp {
         int[] findPairArr = {8, 7, 2, 5, 3, 1};
         int[] firstMissingPostiveArr = {1, 2, 0};
         int[] findKthLargestArr = {3,2,1,5,6,4};
+        int[] maxSubArrayArr = {-2,1,-3,4,-1,2,1,-5,4};
         char[] charArray = {'a', 'b','c', 'd'};
+        int[] binarySubArr = {1,0,1,0,1};
         String[] strArr = {"Hello", "Hello", "Gio"};
+        String[] str = {"flower","flow","flight"};
 
         String s = "A man, a plan, a canal: Panama";
         String revStr = "abcd";
         String palindrome = "racecar";
         String findHighestFrequencyStr = "aababcaab";
-        String palindromicSubstring = "aaa";
-        
-
-        int kthLargest = findKthLargest(findKthLargestArr, 2);
-        out.println("Result: " + kthLargest);
-
+        String palindromicSubstring = "aaa";      
         
     }
 
-    public static void print(int[] arr)
-    {
-        //for debugging only
+    public static int[] readArr(int N, BufferedReader infile, StringTokenizer st) throws Exception {
+        int[] arr = new int[N];
+        st = new StringTokenizer(infile.readLine());
+        for(int i=0; i < N; i++)
+            arr[i] = Integer.parseInt(st.nextToken());
+        return arr;
+    }
+
+    //for debugging only
+    public static void print(int[] arr) {
         for (int x : arr)
             out.print(x + " ");
         out.println();
     }
 
-    public static <T> void printObject(T[] arr)
-    {
-        //for debugging only
+    //for debugging only
+    public static <T> void printObject(T[] arr) {
         for(T x : arr)
             out.print(x+" ");
         out.println();
     }
 
+    public static boolean isPrime(long n) {
+        if(n < 2) return false;
+        if(n == 2 || n == 3) return true;
+        if(n % 2 == 0 || n % 3 == 0) return false;
+        long sqrtN = (long)Math.sqrt(n) + 1;
+        for(long i = 6L; i <= sqrtN; i += 6) {
+            if(n % (i - 1) == 0 || n % (i + 1) == 0) return false;
+        }
+        return true;
+    }
+
+    public static long gcd(long a, long b) {
+        if(a > b)
+            a = (a + b) - (b = a);
+        if(a == 0L)
+            return b;
+        return gcd(b % a, a);
+    }
+
+    public static void sort(int[] arr) {
+        //because Arrays.sort() uses quicksort which is not ideal
+        //Collections.sort() uses merge sort
+        ArrayList<Integer> ls = new ArrayList<Integer>();
+        for(int x: arr)
+            ls.add(x);
+        Collections.sort(ls);
+        for(int i = 0; i < arr.length; i++)
+            arr[i] = ls.get(i);
+    }
+
    public static void reverseString(char[] s) {
         int i = 0; 
         int j = s.length - 1;
-        
         while (i <= j) {
             char tmp = s[i];
             s[i] = s[j];
@@ -63,9 +93,6 @@ public class Temp {
             j--;
         }
    }
-
-
-
 
    private static boolean stringPalindrome(String s) {
         int i = 0;
@@ -158,8 +185,6 @@ public class Temp {
         return validSize;
    }
 
-
-
    // https://www.techiedelight.com/find-pair-with-given-sum-array/
    public static int[] findPair(int[] nums, int target) {
         Map<Integer, Integer> map = new HashMap<>();
@@ -247,7 +272,6 @@ public class Temp {
     }
 
 
-
     public static int firstMissingPositive(int[] nums) {
         if (nums == null || nums.length == 0) return 1;
 
@@ -274,6 +298,7 @@ public class Temp {
         }
         return n + 1;
     }
+
 
     public static int findKthLargest(int[] nums, int k) {
         PriorityQueue<Integer> minHeap = new PriorityQueue<>();
@@ -326,23 +351,184 @@ public class Temp {
 
             }
         }
+
     }
 
 
+    public static boolean isPalindrome(String s) {
+        if (s.length() == 0) return true;
+        String palindrome = "";
+
+        for (int i = 0; i < s.length(); i++) {
+            if (Character.isLetterOrDigit(s.charAt(i))) 
+                palindrome += s.charAt(i);
+        }
+        palindrome = palindrome.toLowerCase();
+
+        int left = 0;
+        int right = palindrome.length() - 1; 
+
+        while (left < right) {
+            if (palindrome.charAt(left) != palindrome.charAt(right)) return false;
+            left++;
+            right--;
+        }
+        return true;
+    }
+
+    public static String longestCommonPrefix(String[] strs) {
+        String prefix = strs[0];
+
+        for (int i = 1; i < strs.length; i++) {
+            while (strs[i].indexOf(prefix) != 0 ) {
+                prefix = prefix.substring(0, prefix.length() - 1);
+
+            }
+        }
+        return prefix;
+    }
 
 
+    public static List<List<Integer>> demo(int[] nums) {
+        Arrays.sort(nums);
+        List<List<Integer>> result  = new ArrayList<>();
+        for (int i = 0; i < nums.length; i++) {
+            if (i > 0 && nums[i] == nums[i - 1]) continue;
+            int left = i + 1;
+            int right = nums.length - 1;
+            while (left < right) {
+                int sum = nums[i] + nums[left] + nums[right];
+                if (sum == 0) {
+                    result.add(Arrays.asList(nums[i], nums[left], nums[right]));
+                    while (left < right && nums[left] == nums[left + 1]) left++;
+                    while (left < right && nums[right] == nums[right - 1]) right--;
+                    left++;
+                    right--;
+
+                } else if (sum < 0) {
+                    right--;
+                } else {
+                    left++;
+                }
+            }
+        }
+        return result;
+    }
+
+    // Kadane's Algorithm
+    public static int maxSubArray(int[] nums) {
+        int max = Integer.MIN_VALUE;
+        int sum = 0;
+
+        for (int i = 0 ; i < nums.length; i++) {
+            sum += nums[i];
+            max = Math.max(sum, max);
+
+            if (sum < 0) sum = 0;
+        }
+        return max;
+    }
 
 
+    // to print maxSubArray index
+    public static int maxSubArrayPrint(int[] nums) {
+        int max = Integer.MIN_VALUE;
+        int sum = 0;
+        // two pointer, one point to start index, the other point to the end index; include start_index and end_index
+        int start_index = -1, end_index = -1;
+        int temp_start_index = -1; // the temporary start position
 
+
+        for (int i = 0; i < nums.length; i++) {
+            sum += nums[i];
+
+            if (sum > max) {
+                end_index = i;
+                start_index = temp_start_index;
+            }
+            max = max(sum, max);
+            if (sum < 0){
+                sum = 0;
+                temp_start_index = i + 1;
+            }
+        }
+        out.println("the start index is " + start_index + " while end index is " + end_index);
+
+        return max;
+    }
+
+    // 1st mehthod
+    public static int numSubarraysWithSum(int[] nums, int goal) {
+        if (nums == null || nums.length == 0) return 0;
+        int numOfSubArrays = 0;
+        int currentSum = 0;
+        int left = 0, right = 0;
+
+        while (left < nums.length && right < nums.length) {
+            currentSum += nums[right];
+
+            if (currentSum < goal) {
+                right++; // keep finding
+            }
+            else if (currentSum > goal) {
+                left++;
+                right = left; // increase right from new left po.
+                currentSum = 0;
+            } else {
+                numOfSubArrays++;
+                right++;
+
+                if (right == nums.length) {
+                    left++;
+                    right = left; // increase right from new left po.
+                    currentSum = 0;
+                }
+            }
+        } 
+        return numOfSubArrays;
+    }
+
+
+    // 2nd method
+   public static int numSubarraysWithSumTwo(int[] input, int goal) {
+        int n = input.length;
+        int[] arr = new int[n + 1];
+        for (int i = 0; i < n; ++i)
+            arr[i + 1] = arr[i] + input[i];
+
+        Map<Integer, Integer> count = new HashMap<>();
+        int ans = 0;
+        for (int i: arr) {
+            ans += count.getOrDefault(i, 0);
+            count.put(i+goal, count.getOrDefault(i+goal, 0) + 1);
+        }
+        return ans;
+    }
+
+    public static int lengthOfLongestSubstring(String s) {
+        int i = 0;
+        int j = 0;
+        int max = 0;
+
+        Set<Character> set = new HashSet<>();
+
+        while (i < s.length()) {
+            char c = s.charAt(i);
+            if (!set.contains(c)) {
+                set.add(c);
+                max = max(max, i - j + 1);
+                i++;
+            } else {
+                set.remove(s.charAt(j));
+                j++; 
+            }
+        }
+        return max;
+    }
 
 
     // 349. Intersection of Two Arrays
     // 1304. Find N Unique Integers Sum up to Zero
     // 27. Remove Element
-
-
-
-
-
 
 }
